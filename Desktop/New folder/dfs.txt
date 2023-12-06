@@ -1,0 +1,122 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void dfs(int node, vector<int>& vis, vector<int> adj[], vector<int>& result) {
+    result.push_back(node);
+    vis[node] = 1;
+
+    for (int neighbor : adj[node]) {
+        if (!vis[neighbor]) {
+            dfs(neighbor, vis, adj, result);
+        }
+    }
+}
+
+vector<int> dfsOfGraph(int V, vector<int> adj[]) {
+    vector<int> result;
+    vector<int> vis(V + 1, 0); // Initialize visited array
+
+    for (int i = 1; i <= V; ++i) {
+        if (!vis[i]) {
+            dfs(i, vis, adj, result);
+        }
+    }
+
+    return result;
+}
+
+void addEdge(vector<int> adj[], int u, int v) {
+    adj[u].push_back(v);
+    adj[v].push_back(u);
+}
+
+void printAns(const vector<int>& ans) {
+    for (int i = 0; i < ans.size(); i++) {
+        cout << ans[i] << " ";
+    }
+}
+
+int main() {
+    int V, E; // Number of vertices and edges
+    cout << "Enter the number of vertices and edges: ";
+    cin >> V >> E;
+
+    vector<int> adj[V + 1]; // Increase the size of the array
+
+    cout << "Enter the edges (u v) separated by space:" << endl;
+    for (int i = 0; i < E; i++) {
+        int u, v;
+        cin >> u >> v;
+        addEdge(adj, u, v);
+    }
+
+    vector<int> ans = dfsOfGraph(V, adj);
+    cout << "DFS Traversal: ";
+    printAns(ans);
+
+    return 0;
+}
+_______________
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// 1. Adjusted the dfs function to use 0-based indexing
+void dfs(int node, vector<int>& vis, vector<int> adj[], vector<int>& result) {
+    result.push_back(node);
+    vis[node] = 1;
+
+    for (int neighbor : adj[node]) {
+        if (!vis[neighbor]) {
+            dfs(neighbor, vis, adj, result);
+        }
+    }
+}
+
+// 2. Adjusted the dfsOfGraph function to use 0-based indexing
+vector<int> dfsOfGraph(int V, vector<int> adj[]) {
+    vector<int> result;
+    vector<int> vis(V, 0); // Initialize visited array with size V
+
+    // 3. Adjusted the loop indices to start from 0
+    for (int i = 0; i < V; ++i) {
+        if (!vis[i]) {
+            dfs(i, vis, adj, result);
+        }
+    }
+
+    return result;
+}
+
+// 4. No changes needed in addEdge function since it uses the same adjacency list representation
+
+void printAns(const vector<int>& ans) {
+    for (int i = 0; i < ans.size(); i++) {
+        cout << ans[i] << " ";
+    }
+}
+
+int main() {
+    int V, E; // Number of vertices and edges
+    cout << "Enter the number of vertices and edges: ";
+    cin >> V >> E;
+
+    // 5. Adjusted the array size to V for 0-based indexing
+    vector<int> adj[V];
+
+    cout << "Enter the edges (u v) separated by space:" << endl;
+    for (int i = 0; i < E; i++) {
+        int u, v;
+        cin >> u >> v;
+        // 6. Adjusted the vertices to be 0-based
+        addEdge(adj, u - 1, v - 1);
+    }
+
+    vector<int> ans = dfsOfGraph(V, adj);
+    cout << "DFS Traversal: ";
+    printAns(ans);
+
+    return 0;
+}

@@ -1,0 +1,124 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> bfsOfGraph(int V, vector<int> adj[]) {
+    int vis[V] = {0}; 
+    vis[0] = 1; 
+    queue<int> q;
+    q.push(0); 
+    vector<int> bfs; 
+
+    while (!q.empty()) {
+        int node = q.front(); 
+        q.pop(); 
+        bfs.push_back(node); 
+
+        for (int i = 0; i < adj[node].size(); i++) {
+            int neighbor = adj[node][i];
+            if (!vis[neighbor]) {
+                vis[neighbor] = 1; 
+                q.push(neighbor); 
+            }
+        }
+    }
+
+    return bfs; 
+}
+
+void addEdge(vector<int> adj[], int u, int v) {
+    adj[u].push_back(v);
+    adj[v].push_back(u);
+}
+
+void printAns(const vector<int> &ans) {
+    for (int i = 0; i < ans.size(); i++) {
+        cout << ans[i] << " ";
+    }
+}
+
+int main() {
+    int V, E; // Number of vertices and edges
+    cout << "Enter the number of vertices and edges: ";
+    cin >> V >> E;
+
+    vector<int> adj[V];
+
+    cout << "Enter the edges (u v) separated by space:" << endl;
+    for (int i = 0; i < E; i++) {
+        int u, v;
+        cin >> u >> v;
+        addEdge(adj, u, v);
+    }
+
+    vector<int> ans = bfsOfGraph(V, adj);
+    cout << "BFS Traversal: ";
+    printAns(ans);
+
+    return 0;
+}
+__________
+0 based indexing
+_______________
+
+
+1 based :_
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> bfsOfGraph(int V, vector<int> adj[]) {
+    int vis[V + 1] = {0}; // Increase the size of the vis array
+    vis[1] = 1; // Start from vertex 1
+    queue<int> q;
+    q.push(1); // Start from vertex 1
+    vector<int> bfs;
+
+    while (!q.empty()) {
+        int node = q.front();
+        q.pop();
+        bfs.push_back(node);
+
+        for (int i = 0; i < adj[node].size(); i++) { // Change to a regular for loop
+            int it = adj[node][i];
+            if (!vis[it]) {
+                vis[it] = 1;
+                q.push(it);
+            }
+        }
+    }
+
+    return bfs;
+}
+
+void addEdge(vector<int> adj[], int u, int v) {
+    adj[u].push_back(v);
+    adj[v].push_back(u);
+}
+
+void printAns(const vector<int> &ans) {
+    for (int i = 0; i < ans.size(); i++) {
+        cout << ans[i] << " ";
+    }
+}
+
+int main() {
+    int V, E; // Number of vertices and edges
+    cout << "Enter the number of vertices and edges: ";
+    cin >> V >> E;
+
+    vector<int> adj[V + 1]; // Increase the size of the array
+
+    cout << "Enter the edges (u v) separated by space:" << endl;
+    for (int i = 0; i < E; i++) {
+        int u, v;
+        cin >> u >> v;
+        addEdge(adj, u, v);
+    }
+
+    vector<int> ans = bfsOfGraph(V, adj);
+    cout << "BFS Traversal: ";
+    printAns(ans);
+
+    return 0;
+}
+
+ 

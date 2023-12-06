@@ -1,0 +1,73 @@
+Certainly! Here's an example of a C++ code for the QuickSort algorithm that takes a random input within a specified range:
+
+#include <iostream>
+#include <vector>
+#include <cstdlib>  // For rand() and srand()
+#include <ctime>    // For time()
+
+using namespace std;
+
+// Function to partition the array and return the pivot index
+int partition(vector<int>& arr, int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; ++j) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+// Function to implement QuickSort
+void quickSort(vector<int>& arr, int low, int high) {
+    if (low < high) {
+        // Partition the array and get the pivot index
+        int pivotIndex = partition(arr, low, high);
+
+        // Recursively sort the subarrays
+        quickSort(arr, low, pivotIndex - 1);
+        quickSort(arr, pivotIndex + 1, high);
+    }
+}
+
+int main() {
+    // Seed for the random number generator
+    srand(time(0));
+
+    int size;
+    cout << "Enter the size of the array: ";
+    cin >> size;
+
+    int minValue, maxValue;
+    cout << "Enter the range for random values (minValue maxValue): ";
+    cin >> minValue >> maxValue;
+
+    vector<int> arr(size);
+
+    // Generate random values within the specified range
+    for (int i = 0; i < size; ++i) {
+        arr[i] = rand() % (maxValue - minValue + 1) + minValue;
+    }
+
+    cout << "Original Array:" << endl;
+    for (int num : arr) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    // Perform QuickSort
+    quickSort(arr, 0, size - 1);
+
+    cout << "Sorted Array:" << endl;
+    for (int num : arr) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    return 0;
+}

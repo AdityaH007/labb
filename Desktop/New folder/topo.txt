@@ -1,0 +1,55 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+
+using namespace std;
+
+void addEdge(vector<vector<int>>& adjList, int u, int v) {
+    adjList[u].push_back(v);
+}
+
+void topologicalSortUtil(int v, vector<bool>& visited, stack<int>& stk, const vector<vector<int>>& adjList) {
+    visited[v] = true;
+
+    for (int neighbor : adjList[v]) {
+        if (!visited[neighbor]) {
+            topologicalSortUtil(neighbor, visited, stk, adjList);
+        }
+    }
+
+    stk.push(v);
+}
+
+void topologicalSort(const vector<vector<int>>& adjList, int vertices) {
+    vector<bool> visited(vertices, false);
+    stack<int> stk;
+
+    for (int i = 0; i < vertices; ++i) {
+        if (!visited[i]) {
+            topologicalSortUtil(i, visited, stk, adjList);
+        }
+    }
+
+    cout << "Topological Sort: ";
+    while (!stk.empty()) {
+        cout << stk.top() << " ";
+        stk.pop();
+    }
+    cout << endl;
+}
+
+int main() {
+    int vertices = 6;
+    vector<vector<int>> adjList(vertices);
+
+    addEdge(adjList, 5, 2);
+    addEdge(adjList, 5, 0);
+    addEdge(adjList, 4, 0);
+    addEdge(adjList, 4, 1);
+    addEdge(adjList, 2, 3);
+    addEdge(adjList, 3, 1);
+
+    topologicalSort(adjList, vertices);
+
+    return 0;
+}

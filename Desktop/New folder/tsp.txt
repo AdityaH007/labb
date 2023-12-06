@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <climits>
+using namespace std;
+
+const int INF = INT_MAX;
+
+int tsp(vector<vector<int>>& graph, int start, vector<int>& path, vector<bool>& visited) {
+    int n = graph.size();
+    
+    // Base case: if all cities are visited, return the cost of returning to the starting city
+    if (count(visited.begin(), visited.end(), false) == 0) {
+        return graph[path.back()][start];
+    }
+
+    int minCost = INF;
+
+    for (int i = 0; i < n; ++i) {
+        if (!visited[i]) {
+            path.push_back(i);
+            visited[i] = true;
+
+            int cost = graph[path[path.size() - 2]][i] + tsp(graph, start, path, visited);
+            minCost = min(minCost, cost);
+
+            visited[i] = false;
+            path.pop_back();
+        }
+    }
+
+    return minCost;
+}
+
+int main() {
+    int n; // Number of cities
+    cout << "Enter the number of cities: ";
+    cin >> n;
+
+    vector<vector<int>> graph(n, vector<int>(n, 0));
+
+    cout << "Enter the adjacency matrix for the cities (0 for no connection):" << endl;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            cin >> graph[i][j];
+        }
+    }
+
+    int startCity; // Starting city (index)
+    cout << "Enter the starting city (index): ";
+    cin >> startCity;
+
+    vector<int> path = {startCity};
+    vector<bool> visited(n, false);
+    visited[startCity] = true;
+
+    int minCost = tsp(graph, startCity, path, visited);
+
+    cout << "Minimum cost for the Traveling Salesman Problem: " << minCost << endl;
+
+    return 0;
+}
